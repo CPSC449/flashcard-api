@@ -15,13 +15,14 @@ public class Flashcard {
     @Id
     private String id;
 
-    @Field
     private String question;
 
-    @Field
     private String answer;
 
-    @Field("createdAt")
+    @Field("created_at")
     private Date createdAt;
+
+    @Field("user_id")
+    private String userId;
 
 }

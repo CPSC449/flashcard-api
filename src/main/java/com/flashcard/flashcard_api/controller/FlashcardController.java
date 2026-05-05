@@ -19,13 +19,15 @@ public class FlashcardController {
     // Create flashcard
     @PostMapping
     public Flashcard create(@RequestBody Flashcard flashcard) {
-        return service.createFlashcard(flashcard);
+        String userId = "123";
+        return service.createFlashcard(flashcard, userId);
     }
 
     // Get all flashcards
     @GetMapping
     public List<Flashcard> getAllFlashcards() {
-        return service.getAllFlashcards();
+        String userId = "123";
+        return service.getAllFlashcards(userId);
     }
 
 

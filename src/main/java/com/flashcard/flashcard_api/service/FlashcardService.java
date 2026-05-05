@@ -16,13 +16,13 @@ public class FlashcardService {
         this.repository = repository;
     }
 
-    public Flashcard createFlashcard(Flashcard flashcard) {
+    public Flashcard createFlashcard(Flashcard flashcard, String userId) {
         flashcard.setCreatedAt(new Date());
         return repository.save(flashcard);
     }
 
-    public List<Flashcard> getAllFlashcards() {
-        return repository.findAll();
+    public List<Flashcard> getAllFlashcards(String userId) {
+        return repository.findByUserId(userId);
     }
 
     public Flashcard getFlashcardById(String id) {
