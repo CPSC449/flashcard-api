@@ -37,11 +37,6 @@ public class AuthController {
         // Hash the password with BCrypt before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // Default role if none provided
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            user.setRoles(List.of("USER"));
-        }
-
         userRepository.save(user);
         return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
@@ -58,11 +53,13 @@ public class AuthController {
                 )
         );
 
-        // Load full UserDetails (with roles) and generate token
-        UserDetails userDetails =
-                userDetailsService.loadUserByUsername(loginRequest.getUsername());
+        User user = userRepository.findByUsername(loginRequest.getUsername())
+                .orElseThrow();
 
-        String token = jwtUtil.generateToken(userDetails);
+        UserDetails userDetails =
+                userDetailsService.loadUserByUsername(user.getUsername());
+
+        String token = jwtUtil.generateToken(userDetails, user.getId());
 
         return ResponseEntity.ok(Map.of("token", token));
     }
