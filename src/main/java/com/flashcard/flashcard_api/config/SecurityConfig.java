@@ -26,9 +26,6 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/flashcards/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/flashcards/**").hasRole("USER")
-                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/flashcards/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
