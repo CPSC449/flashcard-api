@@ -38,6 +38,10 @@ public class JwtUtil {
         return extractClaims(token).get("email", String.class);
     }
 
+    public String extractUserId(String token) {
+        return extractClaims(token).getSubject();
+    }
+
     public String extractToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
 
