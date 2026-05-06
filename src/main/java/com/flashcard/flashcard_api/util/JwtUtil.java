@@ -4,6 +4,7 @@ import com.flashcard.flashcard_api.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,16 @@ public class JwtUtil {
 
     public String extractEmail(String token) {
         return extractClaims(token).get("email", String.class);
+    }
+
+    public String extractToken(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+
+        if (header == null || !header.startsWith("Bearer ")) {
+            return null;
+        }
+
+        return header.substring(7);
     }
 
     public Claims extractClaims(String token) {
