@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,43 +23,42 @@ public class AuthController {
     @Autowired private UserDetailsService userDetailsService;
     @Autowired private JwtUtil jwtUtil;
 
-    // ── POST /api/auth/register ───────────────────────────────────────
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
 
-        // Check if username already taken
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Username already exists"));
+                    .body(Map.of("error", "Email already exists"));
         }
 
-        // Hash the password with BCrypt before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
+
         return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
 
-    // ── POST /api/auth/login ──────────────────────────────────────────
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
 
-        // Validate credentials — throws exception if wrong
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
+                        loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
 
-        User user = userRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow();
+        Optional<User> optionalUser =
+                userRepository.findByEmail(loginRequest.getEmail());
 
-        UserDetails userDetails =
-                userDetailsService.loadUserByUsername(user.getUsername());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity
+                    .status(401)
+                    .body(Map.of("error", "Invalid email or password"));
+        }
 
-        String token = jwtUtil.generateToken(userDetails, user.getId());
+        User user = optionalUser.get();
+        String token = jwtUtil.generateToken(user);
 
         return ResponseEntity.ok(Map.of("token", token));
-    }
-}
+    }}

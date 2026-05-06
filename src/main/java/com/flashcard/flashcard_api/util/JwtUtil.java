@@ -1,5 +1,6 @@
 package com.flashcard.flashcard_api.util;
 
+import com.flashcard.flashcard_api.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -22,23 +23,18 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    // generate a token
-    public String generateToken(UserDetails userDetails, String userId) {
+    public String generateToken(User user) {
         return Jwts.builder()
-                .subject(userDetails.getUsername())
-                .claim("userId", userId)
+                .subject(user.getId())
+                .claim("email", user.getEmail())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey())
                 .compact();
     }
 
-    public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
-    }
-
-    public String extractUserId(String token) {
-        return extractClaims(token).get("userId", String.class);
+    public String extractEmail(String token) {
+        return extractClaims(token).get("email", String.class);
     }
 
     public Claims extractClaims(String token) {
@@ -50,9 +46,9 @@ public class JwtUtil {
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+        final String email = extractEmail(token);
 
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return email.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     public boolean isTokenExpired(String token) {
