@@ -26,7 +26,7 @@ Flashcard API is a RESTful web service built with Spring Boot that allows users 
 * Spring Security
 * JSON Web Tokens (JWT)
 * Maven
-* Docker
+* Docker v27/28/29
 
 ---
 
