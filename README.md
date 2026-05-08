@@ -98,14 +98,17 @@ http://localhost:8080/api/flashcards
   "answer": "A containerization platform"
 }
 ```
+![flashcards_post.png](src/main/resources/static/flashcards_post.png)
 
 ### Get All Flashcards
 
 * **GET /**
+![flashcards_get.png](src/main/resources/static/flashcards_get.png)
 
 ### Get Flashcard by ID
 
 * **GET /{id}**
+![flashcards-id_get.png](src/main/resources/static/flashcards-id_get.png)
 
 ### Update Flashcard
 
@@ -118,11 +121,12 @@ http://localhost:8080/api/flashcards
   "answer": "Updated answer"
 }
 ```
+![flashcard_put.png](src/main/resources/static/flashcard_put.png)
 
 ### Delete Flashcard
 
 * **DELETE /{id}**
-
+![flashcards_delete.png](src/main/resources/static/flashcards_delete.png)
 ---
 
 ## Stopping & Deleting the Container
