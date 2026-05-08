@@ -42,12 +42,18 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
 
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
+        try {
+            authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(401)
+                    .body(Map.of("error", "Invalid email or password"));
+        }
 
         Optional<User> optionalUser =
                 userRepository.findByEmail(loginRequest.getEmail());
