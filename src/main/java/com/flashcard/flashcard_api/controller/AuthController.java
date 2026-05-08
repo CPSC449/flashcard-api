@@ -27,15 +27,16 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody User user) {
 
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Email already exists"));
+            return ResponseEntity
+                    .status(409)
+                    .body(Map.of("error", "Email already in use"));
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
 
-        return ResponseEntity.ok(Map.of("message", "User registered successfully"));
+        return ResponseEntity.status(201).body(Map.of("message", "User registered successfully"));
     }
 
     @PostMapping("/login")
