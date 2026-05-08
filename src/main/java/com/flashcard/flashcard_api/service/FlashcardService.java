@@ -45,8 +45,12 @@ public class FlashcardService {
             existing.setQuestion(updated.getQuestion());
             existing.setAnswer(updated.getAnswer());
             return repository.save(existing);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "This flashcard does not exist!"
+            );
         }
-        return null;
     }
 
     public void deleteFlashcard(String id, String userId) {
