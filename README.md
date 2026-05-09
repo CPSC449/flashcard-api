@@ -84,10 +84,34 @@ docker run -d \
 Base URL:
 
 ```
-http://localhost:8080/api/flashcards
+http://localhost:8080/api
 ```
+### Register User 
 
-### Create Flashcard
+* **POST /auth/register**
+* Request Body:
+
+```json
+{
+  "email": "user@gmail.com",
+  "password": "SecurePassword"
+}
+```
+![Register.png](src/main/resources/static/Register.png)
+### Login User
+
+* **POST /auth/login**
+* Request Body:
+
+```json
+{
+  "email": "user@gmail.com",
+  "password": "SecurePassword"
+}
+```
+![Login.png](src/main/resources/static/Login.png)
+
+### Create Flashcard (/flashcards)
 
 * **POST /**
 * Request Body:
@@ -100,19 +124,19 @@ http://localhost:8080/api/flashcards
 ```
 ![flashcards_post.png](src/main/resources/static/flashcards_post.png)
 
-### Get All Flashcards
+### Get All Flashcards 
 
-* **GET /**
+* **GET /flashcards**
 ![flashcards_get.png](src/main/resources/static/flashcards_get.png)
 
-### Get Flashcard by ID
+### Get Flashcard by ID 
 
-* **GET /{id}**
+* **GET /flashcards/{id}**
 ![flashcards-id_get.png](src/main/resources/static/flashcards-id_get.png)
 
 ### Update Flashcard
 
-* **PUT /{id}**
+* **PUT /flashcards/{id}**
 * Request Body:
 
 ```json
@@ -125,7 +149,7 @@ http://localhost:8080/api/flashcards
 
 ### Delete Flashcard
 
-* **DELETE /{id}**
+* **DELETE /flashcards/{id}**
 ![flashcards_delete.png](src/main/resources/static/flashcards_delete.png)
 ---
 
