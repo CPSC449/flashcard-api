@@ -30,10 +30,11 @@ public class FlashcardService {
 
     public Flashcard getFlashcardById(String id, String userId) {
         Flashcard flashcard = repository.findById(id).orElse(null);
-        if (!flashcard.getUserId().equals(userId)) {
+
+        if (flashcard == null || !flashcard.getUserId().equals(userId)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
-                    "This flashcard does not belong to you!"
+                    "This flashcard does not exists or does not belong to you"
             );
         }
         return flashcard;
@@ -48,7 +49,7 @@ public class FlashcardService {
         } else {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "This flashcard does not exist!"
+                    "This flashcard does not exists or does not belong to you"
             );
         }
     }
@@ -58,7 +59,7 @@ public class FlashcardService {
         if (!flashcard.getUserId().equals(userId)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
-                    "This flashcard does not belong to you!"
+                    "This flashcard does not exists or does not belong to you"
             );
         }
         repository.deleteById(id);
